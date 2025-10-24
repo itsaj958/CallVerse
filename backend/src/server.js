@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 
 import authRoutes from './routes/auth.route.js';
 import userRoutes from './routes/user.route.js';
+import chatRoutes from './routes/chat.route.js';
 
 import {connectDB} from './lib/db.js'; 
 
@@ -17,6 +18,7 @@ app.use(cookieParser()); //middleware to parse cookies from incoming requests.
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/chat", chatRoutes) 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
