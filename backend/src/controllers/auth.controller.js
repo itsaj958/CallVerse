@@ -39,7 +39,7 @@ export async function signup(req, res) {
       password,
       profilePic: randomAvatar,
     });
-    
+
     // Upsert user in Stream
     try {
       await upsertStreamUser({
