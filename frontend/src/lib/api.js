@@ -13,7 +13,7 @@ export const getAuthUser = async () => {
     return res.data;
   } catch (error) {
     console.log("Error in getAuthUser:", error);
-    return null;
+    return null; // return null if there's an error (e.g., user not authenticated)
   }
 };
 // Function to complete onboarding process.
@@ -22,7 +22,14 @@ export const completeOnboarding = async (userData) => {
   return response.data;
 };
 
+// Function to handle user login.
 export const login = async (loginData) => {
   const response = await axiosInstance.post("/auth/login", loginData);
+  return response.data;
+};
+
+// Function to handle user logout.
+export const logout = async () => {
+  const response = await axiosInstance.post("/auth/logout");
   return response.data;
 };

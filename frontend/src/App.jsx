@@ -15,6 +15,11 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import PageLoader from "./components/PageLoader.jsx"; // to show loading state while checking auth status
 import useAuthUser from "./hooks/useAuthUser.js";
+import Layout from "./components/Layout.jsx";
+
+import { useThemeStore } from "./store/useThemeStore.js";
+
+
 
 const App = () => {
    const { isLoading, authUser } = useAuthUser(); // custom hook to get auth user data and loading state
@@ -22,13 +27,28 @@ const App = () => {
   const isAuthenticated = Boolean(authUser); 
   const isOnboarded = authUser?.isOnboarded;
 
+  const { theme } = useThemeStore();
+
   if (isLoading) return <PageLoader />; // if isLoading is true, means data is still being fetched, show loading spinner
  
   return (     // h-screen for full height, it will make the div take the full height of the viewport.
        // with data-theme : we can change the theme of the app which we had taken from daisyui.
 
-    <div className="app h-screen" data-theme="forest" >
+
+    <div className="app h-screen" data-theme={theme} >
+
      <Routes>
+
+        <Route path="/" element={ isAuthenticated && isOnboarded ? (
+
+              <Layout showSidebar={true}>
+                <HomePage />   
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
       <Route path="/" element={<HomePage />} />
       
       <Route
