@@ -41,7 +41,7 @@ export async function getMyFriends(req, res) {
 export async function sendFriendRequest(req, res) {
   try {
     const myId = req.user.id;
-    const { id: recipientId } = req.params;
+    const { id: recipientId } = req.params; // params is used to get data from
 
     // prevent sending req to yourself
     if (myId === recipientId) {
@@ -90,14 +90,14 @@ export async function acceptFriendRequest(req, res) {
   try {
     const { id: requestId } = req.params;
 
-    const friendRequest = await FriendRequest.findById(requestId);
+    const friendRequest = await FriendRequest.findById(requestId); // find the friend request by its id
 
     if (!friendRequest) {
       return res.status(404).json({ message: "Friend request not found" });
     }
 
     // Verify the current user is the recipient
-    if (friendRequest.recipient.toString() !== req.user.id) {
+    if (friendRequest.recipient.toString() !== req.user.id) { // jab request accept kar rahe hai toh reciver hum hai, toh here checking if logged user (me) is recieptient or not.
       return res.status(403).json({ message: "You are not authorized to accept this request" });
     }
 
@@ -110,7 +110,6 @@ export async function acceptFriendRequest(req, res) {
     await User.findByIdAndUpdate(friendRequest.sender, {
       $addToSet: { friends: friendRequest.recipient },
     });
-
     await User.findByIdAndUpdate(friendRequest.recipient, {
       $addToSet: { friends: friendRequest.sender },
     });
@@ -128,8 +127,8 @@ export async function acceptFriendRequest(req, res) {
 export async function getFriendRequests(req, res) {
   try {
     const incomingReqs = await FriendRequest.find({
-      recipient: req.user.id,
-      status: "pending",
+      recipient: req.user.id, // 
+      status: "pending", // tune request abhi accept nahi kiya hai, tere pass basss aai hai.
     }).populate("sender", "fullName profilePic nativeLanguage learningLanguage");
 
     const acceptedReqs = await FriendRequest.find({
@@ -145,7 +144,7 @@ export async function getFriendRequests(req, res) {
 }
 
 // controller to get outgoing friend requests for logged in user
-
+// hamne kis kis ko friend request bheji hai wo dikhayega ye controller.
 export async function getOutgoingFriendReqs(req, res) {
   try {
     const outgoingRequests = await FriendRequest.find({

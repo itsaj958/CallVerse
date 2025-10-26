@@ -13,9 +13,10 @@ router.get("/friends", getMyFriends);
 
 // routes  for friend requests , adding friends can be added here in future.
 
-router.post("/friend-request/:id", sendFriendRequest);
+router.post("/friend-request/:id", sendFriendRequest); // :id is dynamic parameter representing recipient user id.
 
-router.put("/friend-request/:id/accept", acceptFriendRequest); //this is put request because we are updating the friend request status to accepted.
+////this is put request because we are updating the friend request status to accepted.
+router.put("/friend-request/:id/accept", acceptFriendRequest); // :id is dynamic parameter representing friend request id.
 
 router.get("/friend-requests", getFriendRequests);
 router.get("/outgoing-friend-requests", getOutgoingFriendReqs);
