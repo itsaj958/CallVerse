@@ -11,7 +11,7 @@ router.post("/logout", logout);
 router.post("/onboarding", protectRoute , onboard); //before processing the onboard request , we need to verify the JWT token to ensure that the user is authenticated.
 // protectRoute middleware to verify JWT token
 
-// check if user is logged in
+// check if user is logged in , and fetch user data
 router.get("/me", protectRoute, (req, res) => { // if u want to fetch data from server , we use get method.
   res.status(200).json({ success: true, user: req.user });
 });

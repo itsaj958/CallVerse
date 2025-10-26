@@ -1,12 +1,12 @@
-import React from 'react'
-import { useState } from "react";
-import { ShipWheelIcon } from "lucide-react";
+import React from "react";
 import { Link } from "react-router";
-import { useMutation } from '@tanstack/react-query';
-import { signup } from "../lib/api";
+import { ShipWheelIcon } from "lucide-react";
+import { useState } from "react";
 
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { signup } from "../lib/api";
 
-// import useSignUp from "../hooks/useSignUp";
+import useSignUp from "../hooks/useSignUp";
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
@@ -14,27 +14,22 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
-
-  //very important section to understand useMutation and invalidating queries:
-
-  // This is how we did it at first, without using our custom hook
+  // // This is how we did it at first, without using our custom hook
   // const queryClient = useQueryClient();
-  const {
-    mutate: signupMutation,
-    isPending,
-    error,
-  } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
+  // const {
+  //   mutate: signupMutation, // Renaming mutate to signupMutation for clarity
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
 
   // This is how we did it using our custom hook - optimized version
-  // const { isPending, error, signupMutation } = useSignUp();
-
-
+   const { isPending, error, signupMutation } = useSignUp();
 
   const handleSignup = (e) => {
-    e.preventDefault(); // screen will not refresh on form submission
+    e.preventDefault(); // prevent page reload on form submit
     signupMutation(signupData);
   };
 
@@ -67,7 +62,7 @@ const SignUpPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold">Create an Account</h2>
                   <p className="text-sm opacity-70">
-                    Join CallVerse and start your language exchange journey today!
+                    Join CallVerse and socialize with language enthusiasts worldwide
                   </p>
                 </div>
 
@@ -93,7 +88,7 @@ const SignUpPage = () => {
                     </label>
                     <input
                       type="email"
-                      placeholder="Anuj123@gmail.com"
+                      placeholder="Anuj@gmail.com"
                       className="input input-bordered w-full"
                       value={signupData.email}
                       onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
@@ -112,7 +107,6 @@ const SignUpPage = () => {
                       value={signupData.password}
                       onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                       required
-                       minLength={6} 
                     />
                     <p className="text-xs opacity-70 mt-1">
                       Password must be at least 6 characters long
